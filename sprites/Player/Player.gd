@@ -4,7 +4,7 @@ export(int) var max_speed = 80
 export(int) var acceleration = 500
 export(int) var friction = 500
 
-var velocity = Vector2.ZERO
+var motion = Vector2.ZERO
 
 func _physics_process(delta):
 	var input = Vector2.ZERO
@@ -14,13 +14,13 @@ func _physics_process(delta):
 	input = input.normalized()
 	
 	if input != Vector2.ZERO:
-		velocity = velocity.move_toward(input * max_speed, acceleration * delta)
+		motion = motion.move_toward(input * max_speed, acceleration * delta)
 		$AnimationTree.get("parameters/playback").travel("Walk")
-		$AnimationTree.set("parameters/Idle/blend_position", velocity)
-		$AnimationTree.set("parameters/Walk/blend_position", velocity)
+		$AnimationTree.set("parameters/Idle/blend_position", motion)
+		$AnimationTree.set("parameters/Walk/blend_position", motion)
 	else:
 		$AnimationTree.get("parameters/playback").travel("Idle")
-		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+		motion = motion.move_toward(Vector2.ZERO, friction * delta)
 	
-	velocity = move_and_slide(velocity)
+	motion = move_and_slide(motion)
 
